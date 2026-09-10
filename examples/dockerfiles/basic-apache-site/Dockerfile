@@ -2,7 +2,7 @@
 # Demonstrates: RUN layering, COPY, EXPOSE (documentation only), and why the
 # main process must stay in the foreground (see docs/TROUBLESHOOTING.md #1).
 
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 
 RUN apt-get update && \
     apt-get install -y apache2 apache2-utils && \
