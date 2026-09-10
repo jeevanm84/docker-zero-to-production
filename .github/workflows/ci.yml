@@ -21,22 +21,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Hadolint - basic-apache-site
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.5.0
         with:
           dockerfile: examples/dockerfiles/basic-apache-site/Dockerfile
           no-fail: true
       - name: Hadolint - multi-stage-maven-tomcat
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.5.0
         with:
           dockerfile: examples/dockerfiles/multi-stage-maven-tomcat/Dockerfile
           no-fail: true
       - name: Hadolint - flask-app
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.5.0
         with:
           dockerfile: examples/dockerfiles/flask-app/Dockerfile
           no-fail: true
       - name: Hadolint - nginx-load-balancer
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.5.0
         with:
           dockerfile: examples/dockerfiles/nginx-load-balancer/Dockerfile
           no-fail: true
