@@ -1,0 +1,37 @@
+# Four independent "microservices" (internetbanking, mobilebanking,
+# insurance, loan) brought up together with one command instead of four
+# separate `docker build` + `docker run` sequences. See labs/05.
+#
+#   docker-compose up -d
+#   curl http://localhost:81   # internetbanking
+#   curl http://localhost:82   # mobilebanking
+#   curl http://localhost:83   # insurance
+#   curl http://localhost:84   # loan
+#   docker-compose down
+
+version: "3.8"
+
+services:
+  internetbanking:
+    image: internetbanking:v1
+    build: ../../dockerfiles/basic-apache-site
+    ports:
+      - "81:80"
+
+  mobilebanking:
+    image: mobilebanking:v1
+    build: ../../dockerfiles/basic-apache-site
+    ports:
+      - "82:80"
+
+  insurance:
+    image: insurance:v1
+    build: ../../dockerfiles/basic-apache-site
+    ports:
+      - "83:80"
+
+  loan:
+    image: loans:v1
+    build: ../../dockerfiles/basic-apache-site
+    ports:
+      - "84:80"

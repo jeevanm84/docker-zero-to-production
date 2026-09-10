@@ -1,0 +1,32 @@
+# Deployed with `docker stack deploy`, NOT `docker compose up` — Swarm
+# secrets only work on a Swarm cluster. The db password is delivered via a
+# Docker secret mounted at /run/secrets/db_password instead of a plaintext
+# environment variable. See docs/COMPOSE_AND_SWARM.md and docs/SECURITY.md.
+#
+#   cp db_password.txt.example db_password.txt   # then edit the value
+#   docker swarm init                            # if not already a swarm manager
+#   docker stack deploy --compose-file docker-compose.yml myapp
+#   docker stack ps myapp
+#   docker stack rm myapp
+#   docker secret rm myapp_db_password
+
+version: "3.8"
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: webuser
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      POSTGRES_DB: webdatabase
+    secrets:
+      - db_password
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8080:8080"
+
+secrets:
+  db_password:
+    file: db_password.txt

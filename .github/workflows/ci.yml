@@ -1,0 +1,53 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate Markdown, links, and identity policy
+        run: python3 scripts/check.py
+
+  lint-dockerfiles:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Hadolint - basic-apache-site
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: examples/dockerfiles/basic-apache-site/Dockerfile
+          no-fail: true
+      - name: Hadolint - multi-stage-maven-tomcat
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: examples/dockerfiles/multi-stage-maven-tomcat/Dockerfile
+          no-fail: true
+      - name: Hadolint - flask-app
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: examples/dockerfiles/flask-app/Dockerfile
+          no-fail: true
+      - name: Hadolint - nginx-load-balancer
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: examples/dockerfiles/nginx-load-balancer/Dockerfile
+          no-fail: true
+
+  validate-compose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate compose files
+        run: |
+          for f in examples/compose/*/docker-compose.yml; do
+            echo "Validating $f"
+            docker compose -f "$f" config >/dev/null
+          done

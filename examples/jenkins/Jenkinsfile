@@ -1,0 +1,43 @@
+// Parameterized pipeline: build → tag → push → deploy.
+// See docs/CI_CD_PIPELINE.md for the full explanation and labs/07 for the
+// step-by-step lab that builds this in Jenkins's UI.
+//
+// Required job parameters (Choice):
+//   image  -> internetbanking:v1 | mobilebanking:v1 | insurance:v1 | loans:v1
+//   repo   -> <dockerhub-user>/ib-image | .../mb-image | .../insurance-image | .../loans-image
+//
+// Required Jenkins environment variable (Manage Jenkins -> System):
+//   password -> Docker Hub password or access token (never hardcoded here)
+
+pipeline {
+    agent any
+
+    stages {
+        stage('checkout') {
+            steps {
+                git 'https://github.com/<you>/dockerproject.git'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'docker build -t $image .'
+            }
+        }
+        stage('tag') {
+            steps {
+                sh 'docker tag $image $repo'
+            }
+        }
+        stage('push') {
+            steps {
+                sh 'docker login -u <dockerhub-username> -p $password'
+                sh 'docker push $repo'
+            }
+        }
+        stage('deploy') {
+            steps {
+                sh 'docker stack deploy bank -c docker-compose.yml'
+            }
+        }
+    }
+}

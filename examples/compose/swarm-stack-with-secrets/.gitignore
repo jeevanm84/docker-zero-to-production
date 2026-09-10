@@ -1,0 +1,3 @@
+# Never commit the real secret file — copy db_password.txt.example to
+# db_password.txt locally and edit it before running `docker stack deploy`.
+db_password.txt

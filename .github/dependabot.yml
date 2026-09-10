@@ -1,0 +1,22 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+  - package-ecosystem: docker
+    directory: /examples/dockerfiles/basic-apache-site
+    schedule:
+      interval: monthly
+  - package-ecosystem: docker
+    directory: /examples/dockerfiles/multi-stage-maven-tomcat
+    schedule:
+      interval: monthly
+  - package-ecosystem: docker
+    directory: /examples/dockerfiles/flask-app
+    schedule:
+      interval: monthly
+  - package-ecosystem: docker
+    directory: /examples/dockerfiles/nginx-load-balancer
+    schedule:
+      interval: monthly

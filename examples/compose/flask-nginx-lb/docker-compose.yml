@@ -1,0 +1,43 @@
+# Three replicas of the Flask app from examples/dockerfiles/flask-app,
+# load-balanced by Nginx. Nginx round-robins per WORKER PROCESS, so a
+# handful of rapid sequential requests can land on the same worker (and
+# therefore the same backend) before spreading out — run enough requests
+# and all three backend hostnames show up. See labs/05 (extension exercise)
+# and docs/COMPOSE_AND_SWARM.md.
+#
+#   docker-compose up -d --build
+#   for i in $(seq 1 20); do curl -s http://localhost; echo; done | sort | uniq -c
+#   docker-compose down
+
+version: "3"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-lb
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend1
+      - backend2
+      - backend3
+
+  backend1:
+    build: ../../dockerfiles/flask-app
+    container_name: backend1
+    expose:
+      - "5000"
+
+  backend2:
+    build: ../../dockerfiles/flask-app
+    container_name: backend2
+    expose:
+      - "5000"
+
+  backend3:
+    build: ../../dockerfiles/flask-app
+    container_name: backend3
+    expose:
+      - "5000"
