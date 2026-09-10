@@ -11,7 +11,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # ---------- Stage 2 : Runtime ----------
-FROM tomcat:10.1-jdk17-temurin
+FROM tomcat:11.0-jdk17-temurin
 
 RUN rm -rf /usr/local/tomcat/webapps/*
 COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
