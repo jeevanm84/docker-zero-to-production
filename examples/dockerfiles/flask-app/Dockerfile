@@ -2,7 +2,7 @@
 # installed BEFORE the application source, so editing app.py never
 # invalidates the (slow) pip install layer. See docs/TROUBLESHOOTING.md #4.
 
-FROM python:3.11-slim
+FROM python:3.15-slim
 
 WORKDIR /app
 
