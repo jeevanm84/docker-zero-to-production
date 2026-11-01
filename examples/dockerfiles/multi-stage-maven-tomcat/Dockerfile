@@ -4,7 +4,7 @@
 # image. See docs/DOCKERFILE_REFERENCE.md#multi-stage-builds.
 
 # ---------- Stage 1 : Build ----------
-FROM maven:3.9.9-eclipse-temurin-17 AS build
+FROM maven:3.9-eclipse-temurin-26 AS build
 
 WORKDIR /app
 COPY . .
